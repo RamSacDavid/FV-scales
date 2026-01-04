@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Naranjo modificat per radiofàrmacs</title>
+  <title>Algorisme de Naranjo modificat per a radiofàrmacs</title>
   <link rel="stylesheet" href="../assets/css/base.css">
 </head>
 <body>
@@ -11,9 +11,9 @@
     <p><a href="../">← Volver al índice</a></p>
     
 <div id="naranjo-rf-widget" style="max-width:980px;margin:24px auto;padding:18px;border:1px solid #ddd;border-radius:12px;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;">
-  <h2 style="margin:0 0 10px 0;">Calculadora del Algoritmo Naranjo modificado para radiofármacos</h2>
+  <h2 style="margin:0 0 10px 0;">Calculadora de l'Algorisme Naranjo modificat per a radiofàrmacs</h2>
   <p style="margin:0 0 16px 0;color:#333;line-height:1.35;">
-    Selecciona una opción por pregunta. El total y la interpretación se actualizan automáticamente.
+    Selecciona una opció per pregunta. El total i la interpretació s'actualitzen automàticament.
   </p>
 
   <div style="overflow-x:auto;">
@@ -23,7 +23,7 @@
           <th style="text-align:left;padding:10px;border-bottom:2px solid #000;">Pregunta</th>
           <th style="text-align:center;padding:10px;border-bottom:2px solid #000;">Sí</th>
           <th style="text-align:center;padding:10px;border-bottom:2px solid #000;">No</th>
-          <th style="text-align:center;padding:10px;border-bottom:2px solid #000;">Desconocido o No aplica</th>
+          <th style="text-align:center;padding:10px;border-bottom:2px solid #000;">Desconegut o No aplica</th>
         </tr>
       </thead>
       <tbody id="naranjo-rf-questions"></tbody>
@@ -32,15 +32,15 @@
 
   <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;margin-top:16px;padding-top:14px;border-top:1px solid #eee;">
     <div>
-      <div style="font-size:14px;color:#555;">Puntuación total</div>
+      <div style="font-size:14px;color:#555;">Puntuació total</div>
       <div id="naranjo-rf-total" style="font-size:34px;font-weight:700;line-height:1;">0</div>
     </div>
 
     <div style="min-width:260px;">
-      <div style="font-size:14px;color:#555;">Interpretación</div>
-      <div id="naranjo-rf-class" style="font-size:20px;font-weight:700;">Reacción dudosa</div>
+      <div style="font-size:14px;color:#555;">Interpretació</div>
+      <div id="naranjo-rf-class" style="font-size:20px;font-weight:700;">Reacció dubtosa</div>
       <div id="naranjo-rf-range" style="font-size:13px;color:#666;margin-top:4px;">
-        (0 = dudosa · 1–4 = posible · 5–8 = probable · ≥9 = segura)
+        (0 = dubtosa · 1–4 = possible · 5–8 = probable · ≥9 = segura)
       </div>
     </div>
 
@@ -51,40 +51,40 @@
       </button>
       <button type="button" id="naranjo-rf-copy"
         style="padding:10px 14px;border-radius:10px;border:1px solid #111;background:#111;color:#fff;cursor:pointer;">
-        Copiar resultado
+        Copiar resultat
       </button>
     </div>
   </div>
 
   <div id="naranjo-rf-copied" style="display:none;margin-top:10px;color:#0a7a2f;font-size:13px;">
-    Resultado copiado al portapapeles.
+    Resultat copiat al portapapers
   </div>
 
   <details style="margin-top:14px;">
-    <summary style="cursor:pointer;color:#333;">Ver criterios de clasificación</summary>
+    <summary style="cursor:pointer;color:#333;">Veure criteris de classificació</summary>
     <ul style="margin:10px 0 0 18px;color:#444;line-height:1.4;">
-      <li><b>Reacción adversa segura</b>: puntuación total ≥ 9</li>
-      <li><b>Reacción probable</b>: 5–8</li>
-      <li><b>Reacción posible</b>: 1–4</li>
-      <li><b>Reacción dudosa</b>: 0 (y valores negativos si ocurrieran)</li>
+      <li><b>Reacció adversa segura</b>: puntuació total ≥ 9</li>
+      <li><b>Reacció probable</b>: 5–8</li>
+      <li><b>Reacció possible</b>: 1–4</li>
+      <li><b>Reacció dubtosa</b>: 0 (i valors negatius si ocorressin)</li>
     </ul>
   </details>
 </div>
 
 <script>
 (function(){
-  // Preguntas y puntuaciones según la tabla adjunta (Naranjo modificado para radiofármacos)
+  // Preguntes i puntuacions segons la taula adjunta (Naranjo modificat per a radiofàrmacs)
   const QUESTIONS = [
-    { id: "q1", text: "1. ¿Existen datos de esta reacción en la Ficha Técnica del radiofármaco?", yes:  2, no:  0, na: 0 },
-    { id: "q2", text: "2. ¿Apareció el efecto en las 3 primeras horas tras la administración?",            yes:  2, no:  0, na: 0 },
-    { id: "q3", text: "3. ¿Apareció el efecto entre las 3 y 24 horas tras la administración?",             yes:  1, no:  0, na: 0 },
-    { id: "q4", text: "4. ¿Apareció después de las 24 primeras horas tras la administración?",             yes: -1, no:  0, na: 0 },
-    { id: "q5", text: "5. ¿Se han presentado reacciones similares en otros pacientes con dosis procedentes del mismo vial multidosis?", yes: 2, no: -1, na: 0 },
-    { id: "q6", text: "6. ¿Existen causas alternativas que pueden causar la reacción (otra medicación, estado patológico, alimentación)?", yes: -1, no: 1, na: 0 },
-    { id: "q7", text: "7. ¿Hay alteración en la biodistribución del radiofármaco?",                        yes:  1, no:  0, na: 0 },
-    { id: "q8", text: "8. En radiofármacos tecneciados, ¿se detecta alguna reacción en otro radiofármaco preparado con el mismo eluido del generador de 99mTc?", yes: 2, no: -1, na: 0 },
-    { id: "q9", text: "9. ¿Tuvo el paciente una reacción similar al mismo radiofármaco en una administración anterior?", yes: 1, no: 0, na: 0 },
-    { id: "q10", text:"10. ¿Se confirmó el efecto adverso por alguna evidencia objetiva?",                 yes:  1, no:  0, na: 0 },
+    { id: "q1", text: "1. Existeixen dades d'aquesta reacció a la Fitxa Tècnica del radiofàrmac?", yes:  2, no:  0, na: 0 },
+    { id: "q2", text: "2. L'efecte va aparèixer a les 3 primeres hores després de l'administració?", yes:  2, no:  0, na: 0 },
+    { id: "q3", text: "3. L'efecte va aparèixer entre les 3 i 24 hores després de l'administració?",             yes:  1, no:  0, na: 0 },
+    { id: "q4", text: "4. L'efecte va aparèixer després de les primeres 24 hores de l'administració?",             yes: -1, no:  0, na: 0 },
+    { id: "q5", text: "5. S'han presentat reaccions similars en altres pacients amb dosis procedents del mateix vial multidosi?", yes: 2, no: -1, na: 0 },
+    { id: "q6", text: "6. Existeixen causes alternatives de la reacció (altra medicació, patologia, alimentació)?", yes: -1, no: 1, na: 0 },
+    { id: "q7", text: "7. Hi ha alteracions a la biodistribució del radiofàrmac?",                        yes:  1, no:  0, na: 0 },
+    { id: "q8", text: "8. En radiofàrmacs tecneciats, es detecta alguna reacció en un altre radiofàrmac preparat amb el mateix eluït del generador de 99mTc?", yes: 2, no: -1, na: 0 },
+    { id: "q9", text: "9. El/la pacient va tenir una reacció similar al mateix radiofàrmac en una administració prèvia?", yes: 1, no: 0, na: 0 },
+    { id: "q10", text:"10. S'ha confirmat l'efecte advers per alguna evidència objectiva?",                 yes:  1, no:  0, na: 0 },
   ];
 
   const tbody = document.getElementById("naranjo-rf-questions");
@@ -106,7 +106,7 @@
         <td style="padding:10px;border-bottom:1px solid #eee;vertical-align:top;">
           <div style="line-height:1.35;color:#111;">${q.text}</div>
           <div style="margin-top:6px;font-size:12px;color:#666;">
-            Puntos: Sí ${q.yes>=0?`+${q.yes}`:q.yes} · No ${q.no>=0?`+${q.no}`:q.no} · No sabe/No aplica ${q.na>=0?`+${q.na}`:q.na}
+            Punts: Sí ${q.yes>=0?`+${q.yes}`:q.yes} · No ${q.no>=0?`+${q.no}`:q.no} · Desconegut o No aplica ${q.na>=0?`+${q.na}`:q.na}
           </div>
         </td>
         <td style="padding:10px;border-bottom:1px solid #eee;text-align:center;">${cellRadio(q,"Sí", q.yes, false)}</td>
@@ -132,10 +132,10 @@
   }
 
   function classify(total){
-    if (total >= 9) return { label: "Reacción adversa segura", range: "≥ 9" };
-    if (total >= 5) return { label: "Reacción probable", range: "5–8" };
-    if (total >= 1) return { label: "Reacción posible", range: "1–4" };
-    return { label: "Reacción dudosa", range: "0" };
+    if (total >= 9) return { label: "Reacció adversa segura", range: "≥ 9" };
+    if (total >= 5) return { label: "Reacció probable", range: "5–8" };
+    if (total >= 1) return { label: "Reacció possible", range: "1–4" };
+    return { label: "Reacció dubtosa", range: "0" };
   }
 
   function update(){
@@ -156,14 +156,14 @@
   document.getElementById("naranjo-rf-copy").addEventListener("click", async () => {
     const total = getTotal();
     const c = classify(total);
-    const text = `Naranjo modificado (radiofármacos) — Total: ${total} — Interpretación: ${c.label}`;
+    const text = `Naranjo modificat per a radiofàrmacs — Total: ${total} — Interpretació: ${c.label}`;
     try{
       await navigator.clipboard.writeText(text);
       const ok = document.getElementById("naranjo-rf-copied");
       ok.style.display = "block";
       setTimeout(()=> ok.style.display="none", 1800);
     }catch(e){
-      alert("No se pudo copiar automáticamente. Resultado:\n\n" + text);
+      alert("No s'ha pogut copiar automàticament. Resultat:\n\n" + text);
     }
   });
 
